@@ -42,7 +42,18 @@ char* GlobalOrderError;
 //=======External Functions This Runner Calls=====
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_module_generator_needs_to_be_implemented(void);
+extern void test_initial_will_goes_to_CheckButton_when_executed(void);
+extern void test_CheckButton_will_stay_at_current_state_when_button_is_not_read(void);
+extern void test_CheckButton_will_transition_to_ON_when_button_is_read(void);
+extern void test_On_will_turnOnLED_and_stay_when_timer_not_reach_yet(void);
+extern void test_On_goes_to_turnOffLED_when_timer_reached(void);
+extern void test_Off_will_turnOffLED_and_stay_when_timer_not_reach_yet(void);
+extern void test_Off_will_goes_to_CheckCount_when_timer_reached(void);
+extern void test_CheckCount_will_go_to_ON_when_count_is_smaller_than_5(void);
+extern void test_CheckCount_will_goes_to_isButtonHold_when_count_is_equal_to_5(void);
+extern void test_isButtonHold_will_stay_at_currentState_when_button_is_still_press(void);
+extern void test_isButtonHold_will_goes_to_CheckButton_when_button_is_not_press(void);
+extern void test_allInOneTest(void);
 
 
 //=======Mock Management=====
@@ -87,7 +98,18 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_LEDPart3.c");
-  RUN_TEST(test_module_generator_needs_to_be_implemented, 18);
+  RUN_TEST(test_initial_will_goes_to_CheckButton_when_executed, 19);
+  RUN_TEST(test_CheckButton_will_stay_at_current_state_when_button_is_not_read, 32);
+  RUN_TEST(test_CheckButton_will_transition_to_ON_when_button_is_read, 47);
+  RUN_TEST(test_On_will_turnOnLED_and_stay_when_timer_not_reach_yet, 64);
+  RUN_TEST(test_On_goes_to_turnOffLED_when_timer_reached, 88);
+  RUN_TEST(test_Off_will_turnOffLED_and_stay_when_timer_not_reach_yet, 109);
+  RUN_TEST(test_Off_will_goes_to_CheckCount_when_timer_reached, 134);
+  RUN_TEST(test_CheckCount_will_go_to_ON_when_count_is_smaller_than_5, 157);
+  RUN_TEST(test_CheckCount_will_goes_to_isButtonHold_when_count_is_equal_to_5, 175);
+  RUN_TEST(test_isButtonHold_will_stay_at_currentState_when_button_is_still_press, 191);
+  RUN_TEST(test_isButtonHold_will_goes_to_CheckButton_when_button_is_not_press, 209);
+  RUN_TEST(test_allInOneTest, 228);
 
   CMock_Guts_MemFreeFinal();
   return (UnityEnd());

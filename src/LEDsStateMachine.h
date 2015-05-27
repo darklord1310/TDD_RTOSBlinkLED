@@ -13,7 +13,7 @@ typedef enum { initial, ON, OFF, CheckButton, CheckCount, isButtonHold} State;
 typedef enum { LED5 } LEDSelection;
 
 
-void SD_LED5(State *state,int BlinkRate);
+void SD_LED5(State *state,int BlinkRate , int *count, int *previousTime);
 
 
 

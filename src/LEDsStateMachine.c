@@ -1,16 +1,16 @@
 #include "LEDsStateMachine.h"
-
+#include <stdio.h>
 
 /*
  *  LED5 will blinks 5 times when user button is press
  *  Even if user hold the button, it will still blinks 5 times only
  *  After release and press again, then will only blinks for another 5 times
  *
+ *	*Note : The code is slightly modified to make it
+ *			easier to test, this is not the actual code
  */
-void SD_LED5(State *state,int BlinkRate)
+void SD_LED5(State *state,int BlinkRate , int *count, int *previousTime)
 {
-	static int previousTime = 0;
-	static int count = 0;
 
 	switch(*state)
 	{
@@ -22,22 +22,23 @@ void SD_LED5(State *state,int BlinkRate)
 						   break;
 
 		case ON : turnOnLED();
-				   if( getCurrentTime() - previousTime == BlinkRate )
+				   if( getCurrentTime() - *previousTime == BlinkRate )
 				   {
-					 previousTime = getCurrentTime();
+					 *previousTime = getCurrentTime();
 					 *state = OFF;
 				   }
 				   break;
 
 		case OFF : turnOffLED();
-				  if( getCurrentTime() - previousTime == BlinkRate)
+				  if( getCurrentTime() - *previousTime == BlinkRate )
 				  {
-					previousTime = getCurrentTime();
+					*previousTime = getCurrentTime();
 					*state = CheckCount;
-					count++;
+					(*count)++;
 				  }
 				  break;
-		case CheckCount : if(count < 5)
+				  
+		case CheckCount : if( (*count) < 5)
 							 *state = ON;
 						  else
 							  *state = isButtonHold;
@@ -46,7 +47,7 @@ void SD_LED5(State *state,int BlinkRate)
 		case isButtonHold : if( !ReadButton() )
 							{
 								  *state = CheckButton;
-								  count = 0;
+								  *count = 0;
 							}
 							else
 								 *state = isButtonHold;
