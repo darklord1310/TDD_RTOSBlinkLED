@@ -1,7 +1,6 @@
 #include "LEDsStateMachine.h"
 
 
-
 /*
  *  LED5 will blinks 5 times when user button is press
  *  Even if user hold the button, it will still blinks 5 times only

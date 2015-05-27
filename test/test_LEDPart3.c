@@ -17,7 +17,7 @@ void tearDown(void)
 
 void test_module_generator_needs_to_be_implemented(void)
 {
-	State *state = initial;
+	//State *state = initial;
 	
-	SD_LED5(initial , LED5blinkRate);
+	//SD_LED5(initial , LED5blinkRate);
 }

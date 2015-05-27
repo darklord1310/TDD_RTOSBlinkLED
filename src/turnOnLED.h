@@ -1,9 +1,9 @@
-#ifndef turnONLED_H
-#define turnONLED_H
+#ifndef turnOnLED_H
+#define turnOnLED_H
 
 
-void turnONLED();
+void turnOnLED();
 
 
 
-#endif // turnONLED_H
+#endif // turnOnLED_H
