@@ -1,6 +1,6 @@
 ---
 :project:
-  :use_exceptions: false
+  :use_exceptions: true
   :use_mocks: true
   :compile_threads: 1
   :test_threads: 1
@@ -8,7 +8,7 @@
   :use_deep_dependencies: false
   :test_file_prefix: test_
   :options_paths: []
-  :release_build: false
+  :release_build: true
   :use_auxiliary_dependencies: true
   :build_root: build
 :release_build:
@@ -36,10 +36,10 @@
 :defines:
   :test:
   - &1 []
-  - TEST
+  - TEST=
   :test_preprocess:
   - *1
-  - TEST
+  - TEST=
   :release: []
   :release_preprocess: []
   :commmon: []
@@ -49,7 +49,7 @@
   :source: .c
   :assembly: .s
   :object: .o
-  :executable: .out
+  :executable: .exe
   :map: .map
   :list: .lst
   :testpass: .pass
@@ -65,6 +65,7 @@
   :plugins:
   - :ignore
   - :callback
+  - :cexception
   :treat_as:
     uint8: HEX8
     uint16: HEX16
@@ -142,6 +143,28 @@
     - -DGNU_COMPILER
     - -w
     - '"${1}"'
+  :release_compiler:
+    :executable: gcc.exe
+    :name: default_release_compiler
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - -I"$": COLLECTION_PATHS_SOURCE_INCLUDE_VENDOR
+    - -I"$": COLLECTION_PATHS_RELEASE_TOOLCHAIN_INCLUDE
+    - -D$: COLLECTION_DEFINES_RELEASE_AND_VENDOR
+    - -DGNU_COMPILER
+    - -c "${1}"
+    - -o "${2}"
+  :release_linker:
+    :executable: gcc.exe
+    :name: default_release_linker
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - '"${1}"'
+    - -o "${2}"
 :test_compiler:
   :arguments: []
 :test_linker:

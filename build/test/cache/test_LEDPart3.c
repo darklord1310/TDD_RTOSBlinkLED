@@ -1,5 +1,12 @@
-#include "LEDPart3.h"
+#include "mock_ReadButton.h"
+#include "mock_turnOnLED.h"
+#include "mock_turnOffLED.h"
+#include "mock_getCurrrentTime.h"
+#include "LEDsStateMachine.h"
+#include "cmock.h"
 #include "unity.h"
+
+
 
 
 void setUp(void)
@@ -22,6 +29,10 @@ void test_module_generator_needs_to_be_implemented(void)
 
 {
 
- UnityIgnore( ("Implement me!"), (_U_UINT)14);;
+ State *state = initial;
+
+
+
+ SD_LED5(initial , 200);
 
 }

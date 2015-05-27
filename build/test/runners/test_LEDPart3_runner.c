@@ -6,22 +6,34 @@
   Unity.CurrentTestName = #TestFunc; \
   Unity.CurrentTestLineNumber = TestLineNum; \
   Unity.NumberOfTests++; \
+  CMock_Init(); \
   if (TEST_PROTECT()) \
   { \
+    CEXCEPTION_T e; \
+    Try { \
       setUp(); \
       TestFunc(); \
+    } Catch(e) { TEST_ASSERT_EQUAL_HEX32_MESSAGE(CEXCEPTION_NONE, e, "Unhandled Exception!"); } \
   } \
   if (TEST_PROTECT() && !TEST_IS_IGNORED) \
   { \
     tearDown(); \
+    CMock_Verify(); \
   } \
+  CMock_Destroy(); \
   UnityConcludeTest(); \
 }
 
 //=======Automagically Detected Files To Include=====
 #include "unity.h"
+#include "cmock.h"
 #include <setjmp.h>
 #include <stdio.h>
+#include "CException.h"
+#include "mock_getCurrrentTime.h"
+#include "mock_turnOffLED.h"
+#include "mock_turnOnLED.h"
+#include "mock_ReadButton.h"
 
 int GlobalExpectCount;
 int GlobalVerifyOrder;
@@ -33,11 +45,40 @@ extern void tearDown(void);
 extern void test_module_generator_needs_to_be_implemented(void);
 
 
+//=======Mock Management=====
+static void CMock_Init(void)
+{
+  GlobalExpectCount = 0;
+  GlobalVerifyOrder = 0;
+  GlobalOrderError = NULL;
+  mock_getCurrrentTime_Init();
+  mock_turnOffLED_Init();
+  mock_turnOnLED_Init();
+  mock_ReadButton_Init();
+}
+static void CMock_Verify(void)
+{
+  mock_getCurrrentTime_Verify();
+  mock_turnOffLED_Verify();
+  mock_turnOnLED_Verify();
+  mock_ReadButton_Verify();
+}
+static void CMock_Destroy(void)
+{
+  mock_getCurrrentTime_Destroy();
+  mock_turnOffLED_Destroy();
+  mock_turnOnLED_Destroy();
+  mock_ReadButton_Destroy();
+}
+
 //=======Test Reset Option=====
 void resetTest(void);
 void resetTest(void)
 {
+  CMock_Verify();
+  CMock_Destroy();
   tearDown();
+  CMock_Init();
   setUp();
 }
 
@@ -46,7 +87,8 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_LEDPart3.c");
-  RUN_TEST(test_module_generator_needs_to_be_implemented, 12);
+  RUN_TEST(test_module_generator_needs_to_be_implemented, 18);
 
+  CMock_Guts_MemFreeFinal();
   return (UnityEnd());
 }
